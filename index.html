@@ -1,0 +1,55 @@
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Fira+Mono" rel="stylesheet">
+  <style>
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+  }
+  body {
+    background-color: #555555;
+    text-align: center;
+    color: #ffffff;
+    font-family: 'Fira Mono', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  h1, h2 {
+    font-size: 1rem;
+  }
+  h2 {
+    color: #aaaaaa;
+    font-weight: normal;
+  }
+  #scene {
+    width: 100% !important;
+    height: 100% !important;
+    margin: auto;
+  }
+  #scene canvas {
+    cursor: -webkit-grab;
+    cursor: -moz-grab;
+  }
+  #scene canvas:active {
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+  }
+  </style>
+</head>
+
+  <body>
+    <div id="content">
+      <div id="scene"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r83/three.min.js"></script>
+    <script src="https://rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://rawgit.com/mrdoob/stats.js/master/build/stats.min.js"></script>
+    <script src="https://rawgit.com/dataarts/dat.gui/master/build/dat.gui.min.js"></script>
+
+    <script src="boid.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>
