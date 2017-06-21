@@ -4,13 +4,13 @@ var WIDTH = window.innerWidth,
     HEIGHT = window.innerHeight,
     PIXEL_RATIO = window.devicePixelRatio || 1;
 
-var bgColor = 0x555555;
+var bgColor = 0x111c2d;
 
 props = new function() {
   this.neighborRadius = 13;
   this.separationRadius = 16;
   this.cohesion = 0.1;
-  this.separation = 0.6;
+  this.separation = 0.5;
   this.alignment = 0.1;
   this.avoidWalls = 1;
 }
@@ -24,13 +24,13 @@ gui.add(props, 'alignment', 0, 2).onChange(updateScene);
 gui.add(props, 'avoidWalls', 0, 2).onChange(updateScene);
 
 
-var BOID_COUNT = 100;
+var BOID_COUNT = 80;
 var boid, boids = [], fish = [];
 
 function initScene() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(15, WIDTH/HEIGHT, .1, 2000);
-  camera.position.z = 500;
+  camera.position.z = 350;
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setClearColor(bgColor);
@@ -47,19 +47,21 @@ function initScene() {
 
   scene.add(camera);
 
-  var light = new THREE.DirectionalLight( 0xFFFFFF );
+  var directionalLightlight = new THREE.DirectionalLight( 0xFFFFFF, 1 );
+  var ambientLight = new THREE.AmbientLight( 0x888888 ); // soft white light
 
-  scene.add(light);
+  scene.add(directionalLightlight);
+  scene.add(ambientLight);
 
   var cube = new THREE.Mesh(
     new THREE.BoxGeometry(100, 100, 100),
-    new THREE.MeshBasicMaterial({ wireframe:true, color: 0x444444 }));
+    new THREE.MeshBasicMaterial({ wireframe:true, color: 0x000000 }));
 
   scene.add(cube)
 
-  var geometry = new THREE.ConeGeometry(1, 2.5, 6);
+  var geometry = new THREE.ConeGeometry(0.5, 2, 6);
   geometry.rotateX(Math.PI/2);
-  var material = new THREE.MeshPhongMaterial();
+  var material = new THREE.MeshPhongMaterial({ color: 0x2FA1D6 });
 
   for (var i = 0; i < BOID_COUNT; i++) {
     boid = boids[i] = new Boid();
