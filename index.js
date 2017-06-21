@@ -4,7 +4,7 @@ var WIDTH = window.innerWidth,
     HEIGHT = window.innerHeight,
     PIXEL_RATIO = window.devicePixelRatio || 1;
 
-var bgColor = 0x111c2d;
+var BG_COLOR = 0x111c2d;
 
 props = new function() {
   this.neighborRadius = 13;
@@ -13,27 +13,39 @@ props = new function() {
   this.separation = 0.5;
   this.alignment = 0.1;
   this.avoidWalls = 1;
+  this.showWalls = true;
+  this.xRange = 60;
+  this.yRange = 50;
+  this.zRange = 60;
 }
 
 var gui = new dat.GUI();
-gui.add(props, 'neighborRadius', 0, 50).onChange(updateScene);
-gui.add(props, 'separationRadius', 0, 50).onChange(updateScene);
-gui.add(props, 'cohesion', 0, 2).onChange(updateScene);
-gui.add(props, 'separation', 0, 2).onChange(updateScene);
-gui.add(props, 'alignment', 0, 2).onChange(updateScene);
-gui.add(props, 'avoidWalls', 0, 2).onChange(updateScene);
+var boidGui = gui.addFolder('Boid Behavior');
+boidGui.add(props, 'neighborRadius', 0, 50).onChange(updateScene);
+boidGui.add(props, 'separationRadius', 0, 50).onChange(updateScene);
+boidGui.add(props, 'cohesion', 0, 2).onChange(updateScene);
+boidGui.add(props, 'separation', 0, 2).onChange(updateScene);
+boidGui.add(props, 'alignment', 0, 2).onChange(updateScene);
+boidGui.add(props, 'avoidWalls', 0, 2).onChange(updateScene);
+var envGui = gui.addFolder('Enviroment');
+envGui.add(props, 'showWalls').onChange(updateScene);
+envGui.add(props, 'xRange', 20, 200).onChange(updateScene);
+envGui.add(props, 'yRange', 20, 200).onChange(updateScene);
+envGui.add(props, 'zRange', 20, 200).onChange(updateScene);
 
 
 var BOID_COUNT = 80;
-var boid, boids = [], fish = [];
+var walls, boid, boids = [], fish = [];
 
 function initScene() {
   scene = new THREE.Scene();
+  //scene.fog = new THREE.Fog(BG_COLOR, 50, 350);
+
   camera = new THREE.PerspectiveCamera(15, WIDTH/HEIGHT, .1, 2000);
-  camera.position.z = 350;
+  camera.position.z = 200;
 
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setClearColor(bgColor);
+  renderer.setClearColor(BG_COLOR);
   renderer.setPixelRatio(PIXEL_RATIO);
   renderer.setSize(WIDTH, HEIGHT);
 
@@ -53,11 +65,11 @@ function initScene() {
   scene.add(directionalLightlight);
   scene.add(ambientLight);
 
-  var cube = new THREE.Mesh(
-    new THREE.BoxGeometry(100, 100, 100),
-    new THREE.MeshBasicMaterial({ wireframe:true, color: 0x000000 }));
+  walls = new THREE.Mesh(
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.MeshBasicMaterial({ wireframe: true, color: 0xaaaaaa }));
 
-  scene.add(cube)
+  scene.add(walls)
 
   var geometry = new THREE.ConeGeometry(0.5, 2, 6);
   geometry.rotateX(Math.PI/2);
@@ -101,7 +113,8 @@ function render() {
 }
 
 function updateScene() {
-  controls.autoRotateSpeed = props.speed;
+  walls.visible = props.showWalls;
+  walls.scale.set(props.xRange*2, props.yRange*2, props.zRange*2);
   Boid.update(props);
 }
 

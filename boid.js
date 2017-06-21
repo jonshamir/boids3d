@@ -103,16 +103,16 @@ var Boid = function() {
 
 
 // Static props & functions
-Boid.NEIGHBOR_RADIUS = 10;
-Boid.SEPARATION_RADIUS = 5;
+Boid.NEIGHBOR_RADIUS;
+Boid.SEPARATION_RADIUS;
 Boid.MAX_VELOCITY = 0.5;
-Boid.X_RANGE = 50;
-Boid.Y_RANGE = 50;
-Boid.Z_RANGE = 50;
-Boid.COHESION_MULTIPLIER = 0.01;
-Boid.SEPARATION_MULTIPLIER = 1;
-Boid.ALIGNMENT_MULTIPLIER = 0.1;
-Boid.WALLS_MULTIPLIER = 1.5;
+Boid.X_RANGE;
+Boid.Y_RANGE;
+Boid.Z_RANGE;
+Boid.COHESION_MULTIPLIER;
+Boid.SEPARATION_MULTIPLIER;
+Boid.ALIGNMENT_MULTIPLIER;
+Boid.WALLS_MULTIPLIER;
 
 
 
@@ -123,4 +123,8 @@ Boid.update = function(props) {
   Boid.SEPARATION_MULTIPLIER = props.separation;
   Boid.ALIGNMENT_MULTIPLIER = props.alignment;
   Boid.WALLS_MULTIPLIER = props.avoidWalls;
+
+  Boid.X_RANGE = props.xRange;
+  Boid.Y_RANGE = props.yRange;
+  Boid.Z_RANGE = props.zRange;
 }
